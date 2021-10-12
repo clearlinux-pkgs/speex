@@ -4,13 +4,14 @@
 #
 Name     : speex
 Version  : 1.2.0
-Release  : 21
+Release  : 22
 URL      : https://ftp.osuosl.org/pub/xiph/releases/speex/speex-1.2.0.tar.gz
 Source0  : https://ftp.osuosl.org/pub/xiph/releases/speex/speex-1.2.0.tar.gz
 Summary  : An open-source, patent-free speech codec
 Group    : Development/Tools
 License  : BSD-3-Clause
 Requires: speex-bin = %{version}-%{release}
+Requires: speex-filemap = %{version}-%{release}
 Requires: speex-lib = %{version}-%{release}
 Requires: speex-license = %{version}-%{release}
 Requires: speex-man = %{version}-%{release}
@@ -29,6 +30,7 @@ codec.
 Summary: bin components for the speex package.
 Group: Binaries
 Requires: speex-license = %{version}-%{release}
+Requires: speex-filemap = %{version}-%{release}
 
 %description bin
 bin components for the speex package.
@@ -55,10 +57,19 @@ Requires: speex-man = %{version}-%{release}
 doc components for the speex package.
 
 
+%package filemap
+Summary: filemap components for the speex package.
+Group: Default
+
+%description filemap
+filemap components for the speex package.
+
+
 %package lib
 Summary: lib components for the speex package.
 Group: Libraries
 Requires: speex-license = %{version}-%{release}
+Requires: speex-filemap = %{version}-%{release}
 
 %description lib
 lib components for the speex package.
@@ -95,35 +106,35 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1604602015
+export SOURCE_DATE_EPOCH=1634047598
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffast-math -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -ftree-loop-vectorize "
-export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffast-math -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -ftree-loop-vectorize "
-export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffast-math -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -ftree-loop-vectorize "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffast-math -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -ftree-loop-vectorize "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffast-math -ffat-lto-objects -flto=auto -fno-semantic-interposition -ftree-loop-vectorize -mno-vzeroupper -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffast-math -ffat-lto-objects -flto=auto -fno-semantic-interposition -ftree-loop-vectorize -mno-vzeroupper -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffast-math -ffat-lto-objects -flto=auto -fno-semantic-interposition -ftree-loop-vectorize -mno-vzeroupper -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffast-math -ffat-lto-objects -flto=auto -fno-semantic-interposition -ftree-loop-vectorize -mno-vzeroupper -mprefer-vector-width=256 "
 %configure --disable-static --enable-sse
 make  %{?_smp_mflags}
 
 unset PKG_CONFIG_PATH
 pushd ../buildavx2/
-export CFLAGS="$CFLAGS -m64 -march=haswell"
-export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
-export FFLAGS="$FFLAGS -m64 -march=haswell"
-export FCFLAGS="$FCFLAGS -m64 -march=haswell"
-export LDFLAGS="$LDFLAGS -m64 -march=haswell"
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
 %configure --disable-static --enable-sse
 make  %{?_smp_mflags}
 popd
 unset PKG_CONFIG_PATH
 pushd ../buildavx512/
-export CFLAGS="$CFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=512"
-export CXXFLAGS="$CXXFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=512"
-export FFLAGS="$FFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=512"
-export FCFLAGS="$FCFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=512"
-export LDFLAGS="$LDFLAGS -m64 -march=skylake-avx512"
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v4 -mprefer-vector-width=256"
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v4"
 %configure --disable-static --enable-sse
 make  %{?_smp_mflags}
 popd
@@ -139,15 +150,17 @@ cd ../buildavx512;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1604602015
+export SOURCE_DATE_EPOCH=1634047598
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/speex
 cp %{_builddir}/speex-1.2.0/COPYING %{buildroot}/usr/share/package-licenses/speex/7f3f67aef48ead049bebdab307c04c2e03342710
-pushd ../buildavx512/
-%make_install_avx512
-popd
 pushd ../buildavx2/
-%make_install_avx2
+%make_install_v3
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
+popd
+pushd ../buildavx512/
+%make_install_v4
+/usr/bin/elf-move.py avx512 %{buildroot}-v4 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 popd
 %make_install
 
@@ -156,12 +169,9 @@ popd
 
 %files bin
 %defattr(-,root,root,-)
-/usr/bin/haswell/avx512_1/speexdec
-/usr/bin/haswell/avx512_1/speexenc
-/usr/bin/haswell/speexdec
-/usr/bin/haswell/speexenc
 /usr/bin/speexdec
 /usr/bin/speexenc
+/usr/share/clear/optimized-elf/bin*
 
 %files dev
 %defattr(-,root,root,-)
@@ -172,8 +182,6 @@ popd
 /usr/include/speex/speex_header.h
 /usr/include/speex/speex_stereo.h
 /usr/include/speex/speex_types.h
-/usr/lib64/haswell/avx512_1/libspeex.so
-/usr/lib64/haswell/libspeex.so
 /usr/lib64/libspeex.so
 /usr/lib64/pkgconfig/speex.pc
 /usr/share/aclocal/*.m4
@@ -182,14 +190,15 @@ popd
 %defattr(0644,root,root,0755)
 %doc /usr/share/doc/speex/*
 
+%files filemap
+%defattr(-,root,root,-)
+/usr/share/clear/filemap/filemap-speex
+
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/haswell/avx512_1/libspeex.so.1
-/usr/lib64/haswell/avx512_1/libspeex.so.1.5.1
-/usr/lib64/haswell/libspeex.so.1
-/usr/lib64/haswell/libspeex.so.1.5.1
 /usr/lib64/libspeex.so.1
 /usr/lib64/libspeex.so.1.5.1
+/usr/share/clear/optimized-elf/lib*
 
 %files license
 %defattr(0644,root,root,0755)
