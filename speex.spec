@@ -4,7 +4,7 @@
 #
 Name     : speex
 Version  : 1.2.0
-Release  : 23
+Release  : 24
 URL      : https://ftp.osuosl.org/pub/xiph/releases/speex/speex-1.2.0.tar.gz
 Source0  : https://ftp.osuosl.org/pub/xiph/releases/speex/speex-1.2.0.tar.gz
 Summary  : An open-source, patent-free speech codec
@@ -106,7 +106,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1634047598
+export SOURCE_DATE_EPOCH=1634130827
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -150,19 +150,19 @@ cd ../buildavx512;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1634047598
+export SOURCE_DATE_EPOCH=1634130827
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/speex
 cp %{_builddir}/speex-1.2.0/COPYING %{buildroot}/usr/share/package-licenses/speex/7f3f67aef48ead049bebdab307c04c2e03342710
 pushd ../buildavx2/
 %make_install_v3
-/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 popd
 pushd ../buildavx512/
 %make_install_v4
-/usr/bin/elf-move.py avx512 %{buildroot}-v4 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 popd
 %make_install
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
+/usr/bin/elf-move.py avx512 %{buildroot}-v4 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
