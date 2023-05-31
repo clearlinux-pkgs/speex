@@ -7,7 +7,7 @@
 #
 Name     : speex
 Version  : 1.2.1
-Release  : 35
+Release  : 36
 URL      : https://ftp.osuosl.org/pub/xiph/releases/speex/speex-1.2.1.tar.gz
 Source0  : https://ftp.osuosl.org/pub/xiph/releases/speex/speex-1.2.1.tar.gz
 Source1  : https://ftp.osuosl.org/pub/xiph/releases/speex/speex-1.2.1.tar.gz.asc
@@ -103,7 +103,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1683132544
+export SOURCE_DATE_EPOCH=1685503844
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -147,7 +147,7 @@ cd ../buildavx512;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1683132544
+export SOURCE_DATE_EPOCH=1685503844
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/speex
 cp %{_builddir}/speex-%{version}/COPYING %{buildroot}/usr/share/package-licenses/speex/fc3b9b42abbb2f2b795ad9598708f3db0b3e9ae7 || :
@@ -175,8 +175,6 @@ popd
 
 %files dev
 %defattr(-,root,root,-)
-/V3/usr/lib64/libspeex.so
-/V4/usr/lib64/libspeex.so
 /usr/include/speex/speex.h
 /usr/include/speex/speex_bits.h
 /usr/include/speex/speex_callbacks.h
@@ -194,9 +192,7 @@ popd
 
 %files lib
 %defattr(-,root,root,-)
-/V3/usr/lib64/libspeex.so.1
 /V3/usr/lib64/libspeex.so.1.5.2
-/V4/usr/lib64/libspeex.so.1
 /V4/usr/lib64/libspeex.so.1.5.2
 /usr/lib64/libspeex.so.1
 /usr/lib64/libspeex.so.1.5.2
